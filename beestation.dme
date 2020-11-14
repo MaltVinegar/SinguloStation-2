@@ -3171,4 +3171,8 @@
 #include "interface\menu.dm"
 #include "interface\stylesheet.dm"
 #include "interface\skin.dmf"
+#include "Singulostation\code\_globalvars\lists\mapping.dm"
+#include "Singulostation\code\controllers\configuration\entries\game_options.dm"
+#include "Singulostation\code\datums\ruins\constructionstation.dm"
+#include "Singulostation\code\game\objects\effects\landmarks.dm"
 // END_INCLUDE

@@ -146,6 +146,7 @@
 	var/key_mode
 	var/value_mode
 	var/splitter = " "
+	var/lowercase = TRUE //Singulostation - semi-random map
 
 /datum/config_entry/keyed_list/New()
 	. = ..()
@@ -162,7 +163,9 @@
 	var/key_value = null
 
 	if(key_pos || value_mode == VALUE_MODE_FLAG)
-		key_name = lowertext(copytext(str_val, 1, key_pos))
+		key_name = copytext(str_val, 1, key_pos) //Singulostation start - semi-random map
+		if(lowercase)
+			key_name = lowertext(key_name) //Singulostation end - semi-random map
 		if(key_pos)
 			key_value = copytext(str_val, key_pos + length(str_val[key_pos]))
 		var/new_key

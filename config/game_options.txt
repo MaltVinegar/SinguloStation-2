@@ -608,3 +608,15 @@ MAX_SLIMES 100
 
 ## Uncomment to restrict suiciding. Adds an additional confirmation dialogue, additional logging, and prevents suicide within the first 15 minutes of the round.
 #RESTRICTED_SUICIDE
+
+## Constructionstation Station possibilities
+
+CONSTRUCTIONSTATION_RANDOM_STATION Default Base Station,1
+
+## Constructionstation Asteroid possibilities
+
+CONSTRUCTIONSTATION_RANDOM_ASTEROID Default Asteroid,1
+
+## Constructionstation Ruin possibilities
+
+CONSTRUCTIONSTATION_RANDOM_RUIN Ruined Tcomms,1

@@ -8,7 +8,7 @@ SUBSYSTEM_DEF(minor_mapping)
 	place_satchels()
 	return ..()
 
-/datum/controller/subsystem/minor_mapping/proc/trigger_migration(num_mice=10)
+/datum/controller/subsystem/minor_mapping/proc/trigger_migration(num_mice=2)
 	var/list/exposed_wires = find_exposed_wires()
 
 	var/mob/living/simple_animal/mouse/M

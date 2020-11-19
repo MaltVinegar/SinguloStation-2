@@ -446,6 +446,10 @@
 /datum/map_template/shuttle/cargo/box
 	suffix = "box"
 	name = "supply shuttle (Box)"
+	
+/datum/map_template/shuttle/cargo/con
+	suffix = "con"
+	name = "supply shuttle (Con)"
 
 /datum/map_template/shuttle/cargo/kilo
 	suffix = "kilo"

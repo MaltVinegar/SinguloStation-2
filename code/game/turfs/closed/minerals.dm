@@ -535,8 +535,4 @@
 	turf_type = /turf/open/floor/plating/dirt/jungle
 	baseturfs = /turf/open/floor/plating/dirt/jungle
 	initial_gas_mix = JUNGLE_DEFAULT_ATMOS
-	mineralSpawnChanceList = list(
-		/turf/closed/mineral/uranium = 3, /turf/closed/mineral/diamond = 1, /turf/closed/mineral/gold = 8, /turf/closed/mineral/titanium = 8,
-		/turf/closed/mineral/silver = 20, /turf/closed/mineral/copper = 20, /turf/closed/mineral/plasma = 30, /turf/closed/mineral/iron = 95,
-		/turf/closed/mineral/gibtonite = 2)
 	

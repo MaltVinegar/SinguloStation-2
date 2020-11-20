@@ -23,3 +23,17 @@
 
 	minimum_temp = BODYTEMP_COLD_DAMAGE_LIMIT + 1
 	maximum_temp = 350
+
+/datum/atmosphere/jungle
+	id = JUNGLE_DEFAULT_ATMOS
+
+	base_gases = list(
+		/datum/gas/oxygen=31,
+		/datum/gas/nitrogen=75,
+	)
+
+	minimum_pressure = WARNING_LOW_PRESSURE + 20
+	maximum_pressure = LAVALAND_EQUIPMENT_EFFECT_PRESSURE - 1
+
+	minimum_temp = BODYTEMP_COLD_DAMAGE_LIMIT + 15
+	maximum_temp = 300

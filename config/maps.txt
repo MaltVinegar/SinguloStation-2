@@ -17,3 +17,8 @@ map constructionstation
 	maxplayers 0
 	default
 endmap
+
+map maintstation
+	minplayers 0
+	maxplayers 0
+endmap

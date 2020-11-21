@@ -47,9 +47,9 @@
 		if(construction_step == 0)
 			to_chat(user, "<span class='notice'>You begin to remove \the [src] frame from the wall...</span>")
 			if(T.use_tool(src, user, 40))
-				to_chat("<span class='notice'>[user] removes \the [src] frame from the wall.</span>", "<span class='notice'>You remove \the [src] frame from the wall.</span>")
+				user.visible_message("<span class='notice'>[user] removes \the [src] frame from the wall.</span>", "<span class='notice'>You remove \the [src] frame from the wall.</span>")
 				T.play_tool_sound(src)
-				new /obj/item/wallframe/light_switch(user)
+				new /obj/item/wallframe/light_switch(get_turf(user))
 				qdel(src)
 		return
 	if(W.tool_behaviour == TOOL_SCREWDRIVER)
@@ -57,16 +57,16 @@
 		switch(construction_step)
 			if(0)
 				construction_step += 1
-				to_chat("<span class='notice'>[user] screws \the [src] frame into place.</span>", "<span class='notice'>You screw \the [src] frame into place.</span>")
+				user.visible_message("<span class='notice'>[user] screws \the [src] frame into place.</span>", "<span class='notice'>You screw \the [src] frame into place.</span>")
 			if(1)
 				construction_step -= 1
-				to_chat("<span class='notice'>[user] unscrews \the [src] frame.</span>", "<span class='notice'>You unscrew \the [src] frame.</span>")
+				user.visible_message("<span class='notice'>[user] unscrews \the [src] frame.</span>", "<span class='notice'>You unscrew \the [src] frame.</span>")
 			if(2)
 				construction_step += 1
-				to_chat("<span class='notice'>[user] finishes the \the [src] frame.</span>", "<span class='notice'>You finish \the [src] frame.</span>")
+				user.visible_message("<span class='notice'>[user] finishes the \the [src] frame.</span>", "<span class='notice'>You finish \the [src] frame.</span>")
 			if(3)
 				construction_step -= 1
-				to_chat("<span class='notice'>[user] opens the \the [src]'s cover.</span>", "<span class='notice'>You open \the [src]'s cover.</span>")
+				user.visible_message("<span class='notice'>[user] opens the \the [src]'s cover.</span>", "<span class='notice'>You open \the [src]'s cover.</span>")
 		T.play_tool_sound(src)
 		update_icon()
 		return
@@ -74,16 +74,16 @@
 		var/obj/item/wirecutters/T = W
 		switch(construction_step)
 			if(0)
-				to_chat("<span class='warning'>There are no wires to cut!</span>")
+				to_chat(user, "<span class='warning'>There are no wires to cut!</span>")
 			if(1)
-				to_chat("<span class='warning'>There are no wires to cut!</span>")
+				to_chat(user, "<span class='warning'>There are no wires to cut!</span>")
 			if(2)
 				construction_step -= 1
-				to_chat("<span class='notice'>[user] cuts \the [src]'s wires.</span>", "<span class='notice'>You cut \the [src]'s wires.</span>")
-				new /obj/item/stack/cable_coil(user, 5)
+				user.visible_message("<span class='notice'>[user] cuts \the [src]'s wires.</span>", "<span class='notice'>You cut \the [src]'s wires.</span>")
+				new /obj/item/stack/cable_coil(get_turf(user), 5)
 				T.play_tool_sound(src)
 			if(3)
-				to_chat("<span class='warning'>The wires must be exposed to do this!</span>")
+				to_chat(user, "<span class='warning'>The wires must be exposed to do this!</span>")
 		update_icon()
 		return
 	if(istype(W, /obj/item/stack/cable_coil/))
@@ -97,14 +97,15 @@
 				else
 					to_chat(user, "<span class='notice'>You begin to wire \the [src]...</span>")
 					if(T.use_tool(src, user, 30))
-						to_chat("<span class='notice'>[user] adds wire to \the [src].</span>", "<span class='notice'>You add wires to \the [src].</span>")
+						user.visible_message("<span class='notice'>[user] adds wire to \the [src].</span>", "<span class='notice'>You add wires to \the [src].</span>")
 						T.amount -= 5
 						construction_step += 1
 						T.play_tool_sound(src)
+						return
 			if(2)
-				to_chat("<span class='warning'>\The [src] already has wires!</span>")
+				to_chat(user, "<span class='warning'>\The [src] already has wires!</span>")
 			if(3)
-				to_chat("<span class='warning'>\The [src] already has wires!</span>")
+				to_chat(user, "<span class='warning'>\The [src] already has wires!</span>")
 		update_icon()
 		return
 	return ..()

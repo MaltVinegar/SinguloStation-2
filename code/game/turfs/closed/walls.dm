@@ -189,7 +189,7 @@
 				to_chat(user, "<span class='warning'>You need at least 2 plasteel to do this!</span>")
 			else
 				to_chat(user, "<span class='notice'>You begin to reinforce the [src] with \the [I]...</span>")
-				if(do_after(user, 40, target = src))
+				if(do_after(user, 40, target = src) && src.type == /turf/closed/wall)
 					ChangeTurf(/turf/closed/wall/r_wall)
 					user.visible_message("<span class='notice'>[user] reinforces the [src] with \the [I].</span>", "<span class='notice'>You reinforce the [src] with \the [I].</span>")
 					I.amount -= 2

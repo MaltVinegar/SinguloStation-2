@@ -72,7 +72,7 @@
 			add_hiddenprint(user)
 	else if(hatch_open)
 		to_chat(user, "<span class='notice'>You begin to deconstruct the [src] with \the [I]...</span>")
-		if(I.use_tool(src, user, 50))
+		if(I.use_tool(src, user, 50) && src)
 			user.visible_message("<span class='notice'>[user] deconstructs the shower with \the [I].</span>", "<span class='notice'>You deconstruct the shower with \the [I].</span>")
 			new /obj/item/stack/sheet/iron(loc, 10)
 			qdel(src)

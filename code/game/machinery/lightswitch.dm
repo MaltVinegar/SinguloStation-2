@@ -46,7 +46,7 @@
 		var/obj/item/wrench/T = W
 		if(construction_step == 0)
 			to_chat(user, "<span class='notice'>You begin to remove \the [src] frame from the wall...</span>")
-			if(T.use_tool(src, user, 40))
+			if(T.use_tool(src, user, 40) && src)
 				user.visible_message("<span class='notice'>[user] removes \the [src] frame from the wall.</span>", "<span class='notice'>You remove \the [src] frame from the wall.</span>")
 				T.play_tool_sound(src)
 				new /obj/item/wallframe/light_switch(get_turf(user))
@@ -96,9 +96,11 @@
 					to_chat(user, "<span class='warning'>You need at least 5 cable peices to do this!</span>")
 				else
 					to_chat(user, "<span class='notice'>You begin to wire \the [src]...</span>")
-					if(T.use_tool(src, user, 30))
+					if(T.use_tool(src, user, 30) && construction_step == 1)
 						user.visible_message("<span class='notice'>[user] adds wire to \the [src].</span>", "<span class='notice'>You add wires to \the [src].</span>")
 						T.amount -= 5
+						if(T.amount == 0)
+							qdel(T)
 						construction_step += 1
 						T.play_tool_sound(src)
 						return

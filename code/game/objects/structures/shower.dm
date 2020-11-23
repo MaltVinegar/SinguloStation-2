@@ -9,6 +9,7 @@
 	icon_state = "shower"
 	density = FALSE
 	use_power = NO_POWER_USE
+	var/hatch_open = FALSE
 	var/on = FALSE
 	var/current_temperature = SHOWER_NORMAL
 	var/datum/looping_sound/showering/soundloop
@@ -45,22 +46,36 @@
 /obj/machinery/shower/attackby(obj/item/I, mob/user, params)
 	if(I.tool_behaviour == TOOL_ANALYZER)
 		to_chat(user, "<span class='notice'>The water temperature seems to be [current_temperature].</span>")
+	else if(I.tool_behaviour == TOOL_SCREWDRIVER)
+		if(!hatch_open)
+			user.visible_message("<span class='notice'>[user] opens the [src]'s maintenance hatch.</span>", "<span class='notice'>You open the [src]'s maintenance hatch.</span>")
+			hatch_open = TRUE
+		else
+			user.visible_message("<span class='notice'>[user] closes the [src]'s maintenance hatch.</span>", "<span class='notice'>You close the [src]'s maintenance hatch.</span>")
+			hatch_open = FALSE
 	else
 		return ..()
 
 /obj/machinery/shower/wrench_act(mob/living/user, obj/item/I)
-	to_chat(user, "<span class='notice'>You begin to adjust the temperature valve with \the [I]...</span>")
-	if(I.use_tool(src, user, 50))
-		switch(current_temperature)
-			if(SHOWER_NORMAL)
-				current_temperature = SHOWER_FREEZING
-			if(SHOWER_FREEZING)
-				current_temperature = SHOWER_BOILING
-			if(SHOWER_BOILING)
-				current_temperature = SHOWER_NORMAL
-		user.visible_message("<span class='notice'>[user] adjusts the shower with \the [I].</span>", "<span class='notice'>You adjust the shower with \the [I] to [current_temperature] temperature.</span>")
-		user.log_message("has wrenched a shower at [AREACOORD(src)] to [current_temperature].", LOG_ATTACK)
-		add_hiddenprint(user)
+	if(!hatch_open)
+		to_chat(user, "<span class='notice'>You begin to adjust the temperature valve with \the [I]...</span>")
+		if(I.use_tool(src, user, 50))
+			switch(current_temperature)
+				if(SHOWER_NORMAL)
+					current_temperature = SHOWER_FREEZING
+				if(SHOWER_FREEZING)
+					current_temperature = SHOWER_BOILING
+				if(SHOWER_BOILING)
+					current_temperature = SHOWER_NORMAL
+			user.visible_message("<span class='notice'>[user] adjusts the shower with \the [I].</span>", "<span class='notice'>You adjust the shower with \the [I] to [current_temperature] temperature.</span>")
+			user.log_message("has wrenched a shower at [AREACOORD(src)] to [current_temperature].", LOG_ATTACK)
+			add_hiddenprint(user)
+	else if(hatch_open)
+		to_chat(user, "<span class='notice'>You begin to deconstruct the [src] with \the [I]...</span>")
+		if(I.use_tool(src, user, 50) && src)
+			user.visible_message("<span class='notice'>[user] deconstructs the shower with \the [I].</span>", "<span class='notice'>You deconstruct the shower with \the [I].</span>")
+			new /obj/item/stack/sheet/iron(loc, 10)
+			qdel(src)
 	handle_mist()
 	return TRUE
 

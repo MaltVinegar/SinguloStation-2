@@ -36,7 +36,7 @@
 	return FALSE
 
 
-/proc/seedRuins(list/z_levels = null, budget = 0, whitelist = /area/space, list/potentialRuins)
+/proc/seedRuins(list/z_levels = null, budget = 0, whitelist = list(/area/space), list/potentialRuins)
 	if(!z_levels || !z_levels.len)
 		WARNING("No Z levels provided - Not generating ruins")
 		return
@@ -49,9 +49,8 @@
 
 	var/list/ruins = potentialRuins.Copy()
 
-	var/list/forced_ruins = list()		//These go first on the z level associated (same random one by default)
+	var/list/forced_ruins = list()		//These go first on the z level associated (same random one by default) or if the assoc value is a turf to the specified turf.
 	var/list/ruins_available = list()	//we can try these in the current pass
-	var/forced_z	//If set we won't pick z level and use this one instead.
 
 	//Set up the starting ruin list
 	for(var/key in ruins)
@@ -63,27 +62,38 @@
 		if(R.unpickable)
 			continue
 		ruins_available[R] = R.placement_weight
-
 	while(budget > 0 && (ruins_available.len || forced_ruins.len))
 		var/datum/map_template/ruin/current_pick
 		var/forced = FALSE
+		var/forced_z	//If set we won't pick z level and use this one instead.
+		var/forced_turf //If set we place the ruin centered on the given turf
 		if(forced_ruins.len) //We have something we need to load right now, so just pick it
 			for(var/ruin in forced_ruins)
 				current_pick = ruin
-				if(forced_ruins[ruin] > 0) //Load into designated z
+				if(isturf(forced_ruins[ruin]))
+					var/turf/T = forced_ruins[ruin]
+					forced_z = T.z //In case of chained ruins
+					forced_turf = T
+				else if(forced_ruins[ruin] > 0) //Load into designated z
 					forced_z = forced_ruins[ruin]
 				forced = TRUE
 				break
 		else //Otherwise just pick random one
 			current_pick = pickweight(ruins_available)
 
-		var/placement_tries = PLACEMENT_TRIES
+		var/placement_tries = forced_turf ? 1 : PLACEMENT_TRIES //Only try once if we target specific turf
 		var/failed_to_place = TRUE
-		var/z_placed = 0
+		var/target_z = 0
+		var/turf/placed_turf //Where the ruin ended up if we succeeded
+
 		while(placement_tries > 0)
 			placement_tries--
-			z_placed = pick(z_levels)
-			if(!current_pick.try_to_place(forced_z ? forced_z : z_placed,whitelist))
+			target_z = pick(z_levels)
+			if(forced_z)
+				target_z = forced_z
+
+			placed_turf = current_pick.try_to_place(target_z,whitelist,forced_turf)
+			if(!placed_turf)
 				continue
 			else
 				failed_to_place = FALSE
@@ -118,14 +128,13 @@
 						if(istype(linked,v))
 							switch(current_pick.always_spawn_with[v])
 								if(PLACE_SAME_Z)
-									forced_ruins[linked] = forced_z ? forced_z : z_placed //I guess you might want a chain somehow
+									forced_ruins[linked] = target_z //I guess you might want a chain somehow
 								if(PLACE_LAVA_RUIN)
 									forced_ruins[linked] = pick(SSmapping.levels_by_trait(ZTRAIT_LAVA_RUINS))
 								if(PLACE_SPACE_RUIN)
 									forced_ruins[linked] = pick(SSmapping.levels_by_trait(ZTRAIT_SPACE_RUINS))
 								if(PLACE_DEFAULT)
 									forced_ruins[linked] = -1
-		forced_z = 0
 
 		//Update the available list
 		for(var/datum/map_template/ruin/R in ruins_available)

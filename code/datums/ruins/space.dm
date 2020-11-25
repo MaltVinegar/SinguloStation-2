@@ -264,9 +264,11 @@
 	Aged and deprecated by time, this relic of a vessel is now broken beyond repair."
 
 /datum/map_template/ruin/space/whiteshipdock
+	always_place = TRUE
 	id = "whiteshipdock"
 	suffix = "whiteshipdock.dmm"
 	name = "Whiteship Dock"
+	cost = 0
 	description = "An abandoned but functional vessel parked in deep space, ripe for the taking."
 
 /datum/map_template/ruin/space/cat_experiments

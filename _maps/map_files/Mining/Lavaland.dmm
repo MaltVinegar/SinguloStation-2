@@ -1596,7 +1596,6 @@
 /turf/open/floor/plasteel,
 /area/mine/science)
 "gc" = (
-/obj/item/beacon,
 /obj/effect/turf_decal/tile/purple{
 	dir = 8
 	},
@@ -6365,7 +6364,6 @@
 	dir = 6
 	},
 /obj/structure/cable,
-/obj/machinery/bluespace_beacon,
 /obj/machinery/atmospherics/pipe/simple/scrubbers/hidden/layer3{
 	dir = 10
 	},

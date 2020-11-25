@@ -121,3 +121,19 @@
 	w_class = WEIGHT_CLASS_SMALL
 	materials = list(/datum/material/iron=50, /datum/material/glass=50)
 	grind_results = list(/datum/reagent/iron = 10, /datum/reagent/silicon = 10)
+
+
+/obj/item/wallframe/light_switch
+	icon = 'icons/obj/wallframe.dmi'
+	icon_state = "light"
+	name = "\improper lightswitch frame"
+	desc = "A frame for a lightswitch."
+	result_path = /obj/machinery/light_switch
+	pixel_shift = -27
+	materials = list(/datum/material/iron=50, /datum/material/glass=50)
+	grind_results = list(/datum/reagent/iron = 10, /datum/reagent/silicon = 10)
+
+/obj/item/wallframe/light_switch/after_attach(var/obj/machinery/light_switch/O)
+	O.construction_step = 0
+	O.update_icon()
+	..()

@@ -205,7 +205,22 @@ RLD
 	var/canRturf = FALSE //Variable for R walls to deconstruct them
 
 /obj/item/construction/rcd/suicide_act(mob/user)
-	user.visible_message("<span class='suicide'>[user] sets the RCD to 'Wall' and points it down [user.p_their()] throat! It looks like [user.p_theyre()] trying to commit suicide..</span>")
+	mode = RCD_FLOORWALL
+	var/turf/T = get_turf(user)
+
+	if(isopenturf(T) && checkResource(16, user)) // It takes 16 resources to construct a wall
+		user.visible_message("<span class='suicide'>[user] sets the RCD to 'Wall' and points it down [user.p_their()] throat! It looks like [user.p_theyre()] trying to commit suicide..</span>")
+		T.rcd_act(user, src, RCD_FLOORWALL)
+		T = get_turf(user)
+		if(isopenturf(T)) // If RCD didn't place a wall (if it placed a floor this will place the the wall)
+			T.rcd_act(user, src, RCD_FLOORWALL)
+		user.gib()
+		useResource(16, user)
+		activate()
+		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
+	else
+		user.visible_message("<span class='suicide'>[user] is beating [user.p_them()]self to death with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
+
 	return (BRUTELOSS)
 
 /obj/item/construction/rcd/verb/toggle_window_type_verb()

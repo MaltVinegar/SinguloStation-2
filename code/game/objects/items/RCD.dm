@@ -209,10 +209,10 @@ RLD
 	var/turf/T = get_turf(user)
 
 	if(isopenturf(T) && checkResource(16, user)) // It takes 16 resources to construct a wall
-		user.visible_message("<span class='suicide'>[user] sets the RCD to 'Wall' and points it down [user.p_their()] throat! It looks like [user.p_theyre()] trying to commit suicide..</span>")
+		user.visible_message("<span class='suicide'>[user] sets the RCD to 'Wall' and points it down [user.p_their()] throat! It looks like [user.p_theyre()] trying to commit suicide!</span>")
 		T.rcd_act(user, src, RCD_FLOORWALL)
 		T = get_turf(user)
-		if(isopenturf(T)) // If RCD didn't place a wall (if it placed a floor this will place the the wall)
+		if(isopenturf(T)) // If the RCD didn't place a wall (if it placed a floor this will place a wall)
 			T.rcd_act(user, src, RCD_FLOORWALL)
 		user.gib()
 		useResource(16, user)

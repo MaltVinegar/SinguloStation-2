@@ -210,18 +210,20 @@ RLD
 
 	if(isopenturf(T) && checkResource(16, user)) // It takes 16 resources to construct a wall
 		user.visible_message("<span class='suicide'>[user] sets the RCD to 'Wall' and points it down [user.p_their()] throat! It looks like [user.p_theyre()] trying to commit suicide!</span>")
-		T.rcd_act(user, src, RCD_FLOORWALL)
+		var/success = T.rcd_act(user, src, RCD_FLOORWALL)
 		T = get_turf(user)
-		if(isopenturf(T)) // If the RCD didn't place a wall (if it placed a floor this will place a wall)
+		// If the RCD placed a floor instead of a wall; having a wall without plating under it is cursed
+		// There isn't an easy programmatical way to check if rcd_act will place a floor or a wall, so just repeat using it for free
+		if(success && isopenturf(T))
 			T.rcd_act(user, src, RCD_FLOORWALL)
-		user.gib()
 		useResource(16, user)
 		activate()
 		playsound(src.loc, 'sound/machines/click.ogg', 50, 1)
-	else
-		user.visible_message("<span class='suicide'>[user] is beating [user.p_them()]self to death with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
+		user.gib()
+		return MANUAL_SUICIDE
 
-	return (BRUTELOSS)
+	user.visible_message("<span class='suicide'>[user] is beating [user.p_them()]self to death with [src]! It looks like [user.p_theyre()] trying to commit suicide!</span>")
+	return BRUTELOSS
 
 /obj/item/construction/rcd/verb/toggle_window_type_verb()
 	set name = "RCD : Toggle Window Type"
